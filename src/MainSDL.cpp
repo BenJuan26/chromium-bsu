@@ -55,6 +55,8 @@ MainSDL::MainSDL(int argc, char **argv)
 	xjoy = yjoy = xjNow = yjNow = 0;
 	adjCount = 0;
 	key_speed_x = key_speed_y = 0;
+	window = NULL;
+	context = NULL;
 
 	Uint32 initOpts;
 
@@ -367,6 +369,9 @@ bool MainSDL::setVideoMode()
 	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
 
 #if SDL_VERSION_ATLEAST(2,0,0)
+	SDL_GL_DeleteContext(context);
+	SDL_DestroyWindow(window);
+
 	window = SDL_CreateWindow("Chromium B.S.U.", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, video_flags);
 	if (!window) {
 		fprintf(stderr, _("Couldn't create window: %s\n"), SDL_GetError());
