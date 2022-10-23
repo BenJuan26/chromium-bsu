@@ -68,14 +68,31 @@ bool MainSDL::process(SDL_Event *event)
 #if SDL_VERSION_ATLEAST(2,0,0)
 	    case SDL_WINDOWEVENT:
 		switch (event->window.event) {
-			case SDL_WINDOWEVENT_RESTORED: shown = true; gain = true; break;
-			case SDL_WINDOWEVENT_MINIMIZED: shown = true; gain = false; break;
-			case SDL_WINDOWEVENT_ENTER: mouse = true; gain = true; break;
-			case SDL_WINDOWEVENT_LEAVE: mouse = true; gain = false; break;
-			case SDL_WINDOWEVENT_FOCUS_GAINED: input = true; gain = true; break;
-			case SDL_WINDOWEVENT_FOCUS_LOST: input = true; gain = false; break;
+			case SDL_WINDOWEVENT_RESTORED:
+				shown = true; gain = true;
+				activation(shown, mouse, input, gain);
+				break;
+			case SDL_WINDOWEVENT_MINIMIZED:
+				shown = true; gain = false;
+				activation(shown, mouse, input, gain);
+				break;
+			case SDL_WINDOWEVENT_ENTER:
+				mouse = true; gain = true;
+				activation(shown, mouse, input, gain);
+				break;
+			case SDL_WINDOWEVENT_LEAVE:
+				mouse = true; gain = false;
+				activation(shown, mouse, input, gain);
+				break;
+			case SDL_WINDOWEVENT_FOCUS_GAINED:
+				input = true; gain = true;
+				activation(shown, mouse, input, gain);
+				break;
+			case SDL_WINDOWEVENT_FOCUS_LOST:
+				input = true; gain = false;
+				activation(shown, mouse, input, gain);
+				break;
 		}
-		activation(shown, mouse, input, gain);
 		break;
 #else
 	    case SDL_ACTIVEEVENT:
