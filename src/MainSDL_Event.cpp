@@ -707,17 +707,40 @@ void MainSDL::joystickMotion(SDL_Event *)
 }
 
 //----------------------------------------------------------
-void MainSDL::joystickButtonDown(SDL_Event *)
+void MainSDL::joystickButtonDown(SDL_Event *ev)
 {
+#ifdef WITH_JOYSTICK_BUTTONS
 	Global	*game = Global::getInstance();
-	game->hero->fireGun(++fire);
+	if( config->debug() ) fprintf(stderr, "joy button %d pressed", ev->button);
+	switch ev->button
+	{
+		case 3: // A?
+			game->hero->fireGun(++fire);
+			break;
+		case 5: // Y?
+			game->hero->useItem();
+			break;
+		default:
+			break;
+	}
+#endif
 }
 
 //----------------------------------------------------------
-void MainSDL::joystickButtonUp(SDL_Event *)
+void MainSDL::joystickButtonUp(SDL_Event *ev)
 {
+#ifdef WITH_JOYSTICK_BUTTONS
 	Global	*game = Global::getInstance();
-	game->hero->fireGun(--fire);
+	if( config->debug() ) fprintf(stderr, "joy button %d released", ev->button);
+	switch ev->button
+	{
+		case 3: // A?
+			game->hero->fireGun(--fire);
+			break;
+		default:
+			break;
+	}
+#endif
 }
 
 //----------------------------------------------------------
