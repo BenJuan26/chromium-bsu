@@ -711,8 +711,9 @@ void MainSDL::joystickButtonDown(SDL_Event *ev)
 {
 #ifdef WITH_JOYSTICK_BUTTONS
 	Global	*game = Global::getInstance();
+	Config* config = Config::instance();
 	if( config->debug() ) fprintf(stderr, "joy button %d pressed", ev->jbutton.button);
-	switch ev->jbutton.button
+	switch (ev->jbutton.button)
 	{
 		case 3: // A?
 			game->hero->fireGun(++fire);
@@ -731,8 +732,9 @@ void MainSDL::joystickButtonUp(SDL_Event *ev)
 {
 #ifdef WITH_JOYSTICK_BUTTONS
 	Global	*game = Global::getInstance();
+	Config* config = Config::instance();
 	if( config->debug() ) fprintf(stderr, "joy button %d released", ev->jbutton.button);
-	switch ev->jbutton.button
+	switch (ev->jbutton.button)
 	{
 		case 3: // A?
 			game->hero->fireGun(--fire);
