@@ -715,10 +715,10 @@ void MainSDL::joystickButtonDown(SDL_Event *ev)
 	if( config->debug() ) fprintf(stderr, "joy button %d pressed", ev->jbutton.button);
 	switch (ev->jbutton.button)
 	{
-		case 3: // A?
+		case config->fireButton():
 			game->hero->fireGun(++fire);
 			break;
-		case 5: // Y?
+		case config->useItemButton():
 			game->hero->useItem();
 			break;
 		default:

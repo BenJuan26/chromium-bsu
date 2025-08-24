@@ -105,6 +105,11 @@ public:
 	enum TextType { TextGLC, TextFTGL, NumTextTypes };
 	TextType	textType()	{ return m_textType; };
 
+#ifdef WITH_JOYSTICK_BUTTONS
+	int fireButton() { return m_fireButton; }
+	int useItemButton() { return m_useItemButton; }
+#endif
+
 private:
 	int 	 m_screenW;
 	int 	 m_screenH;
@@ -145,6 +150,11 @@ private:
 	AudioType	m_audioType;
 
 	TextType	m_textType;
+
+#ifdef WITH_JOYSTICK_BUTTONS
+	int		m_fireButton;
+	int		m_useItemButton;
+#endif
 
 private:
 	static Config	*m_instance;
