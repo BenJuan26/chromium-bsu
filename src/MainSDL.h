@@ -33,6 +33,7 @@ public:
 	void joystickMove();
 	void keyMove();
 	void dpadMove();
+	void controllerMove();
 
 private:
 	void activation(bool shown, bool mouse, bool input, bool gain);

@@ -589,7 +589,7 @@ void MainSDL::dpadMove()
 	float s = 0.7;
 	dpadSpeedX *= s;
 	dpadSpeedY *= s;
-	game->hero->moveEvent(dpadSpeedX,key_speed_y);
+	game->hero->moveEvent(dpadSpeedX,dpadSpeedY);
 }
 
 //----------------------------------------------------------
@@ -807,7 +807,7 @@ void MainSDL::buttonDownGame(SDL_Event *event)
 			break;
 	    case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_A:
 		case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
-			game->hero->fireGun(++fire);
+			game->hero->fireGun(true);
 			break;
 		default:
 			break;
@@ -863,7 +863,8 @@ void MainSDL::controllerButtonUp(SDL_Event *ev)
 
 	switch (button) {
 		case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_A:
-			game->hero->fireGun(--fire);
+		case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
+			game->hero->fireGun(false);
 			break;
 		default:
 			break;
@@ -881,6 +882,23 @@ void MainSDL::joystickMove()
 	{
 		xjoy = SDL_JoystickGetAxis(joystick, 0)/div;
 		yjoy = SDL_JoystickGetAxis(joystick, 1)/div;
+		xjNow = 0.8*xjNow + 0.2*xjoy;
+		yjNow = 0.8*yjNow + 0.2*yjoy;
+		game->hero->moveEvent((int)xjNow, (int)yjNow);
+	}
+#endif
+}
+
+//----------------------------------------------------------
+void MainSDL::controllerMove()
+{
+#ifdef WITH_GAMEPAD
+	Global	*game = Global::getInstance();
+	static int div = 32768/16;
+	if(gamepad)
+	{
+		xjoy = SDL_GameControllerGetAxis(gamepad, SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX)/div;
+		yjoy = SDL_GameControllerGetAxis(gamepad, SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY)/div;
 		xjNow = 0.8*xjNow + 0.2*xjoy;
 		yjNow = 0.8*yjNow + 0.2*yjoy;
 		game->hero->moveEvent((int)xjNow, (int)yjNow);
