@@ -108,7 +108,7 @@ Config::Config()
 	m_audioType		= AudioOpenAL;
 	m_textType		= TextGLC;
 
-#ifdef WITH_JOYSTICK_BUTTONS
+#ifdef WITH_GAMEPAD
 	m_fireButton = 3;
 	m_useItemButton = 5;
 #endif
@@ -234,7 +234,7 @@ void Config::readValues(FILE* file)
 		if(strncmp(configStrings[i], "cdromCou", 8) == 0) { sscanf(configStrings[i], "cdromCount %d\n",    &m_cdromCount); }
 		if(strncmp(configStrings[i], "cdromDev", 8) == 0) { sscanf(configStrings[i], "cdromDevice %d\n",   &m_cdromDevice); }
 #endif // USE_SDL_CDROM
-#ifdef WITH_JOYSTICK_BUTTONS
+#ifdef WITH_GAMEPAD
 		if(strncmp(configStrings[i], "fireButt", 8) == 0) { sscanf(configStrings[i], "fireButton %d\n",     &m_fireButton); }
 		if(strncmp(configStrings[i], "useItemB", 8) == 0) { sscanf(configStrings[i], "useItemButton %d\n",     &m_useItemButton); }
 #endif
@@ -332,7 +332,7 @@ bool Config::saveFile()
 		fprintf(file, "cdromCount %d\n",	m_cdromCount);
 		fprintf(file, "cdromDevice %d\n",	m_cdromDevice);
 #endif // USE_SDL_CDROM
-#ifdef WITH_JOYSTICK_BUTTONS
+#ifdef WITH_GAMEPAD
 		fprintf(file, "fireButton %d\n", m_fireButton);
 		fprintf(file, "useItemButton %d\n", m_useItemButton);
 #endif

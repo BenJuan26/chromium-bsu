@@ -32,6 +32,7 @@ public:
 	bool process(SDL_Event *event);
 	void joystickMove();
 	void keyMove();
+	void dpadMove();
 
 private:
 	void activation(bool shown, bool mouse, bool input, bool gain);
@@ -44,6 +45,10 @@ private:
 	void joystickMotion(SDL_Event *event);
 	void joystickButtonDown(SDL_Event *event);
 	void joystickButtonUp(SDL_Event *event);
+	void controllerButtonDown(SDL_Event *event);
+	void controllerButtonUp(SDL_Event *event);
+	void togglePause();
+	void buttonDownGame(SDL_Event *event);
 
 	void		saveEvent(SDL_Event *event);
 	SDL_Event	*getEvent(FILE *infile);
@@ -54,6 +59,7 @@ private:
 	SDL_GLContext context;
 #endif
 	SDL_Joystick	*joystick;
+	SDL_GameController *gamepad;
 	int		fire;
 	bool	mouseToggle;
 	int		xLast, yLast;
@@ -63,6 +69,7 @@ private:
 
 	int	adjCount;
 	float	key_speed_x, key_speed_y;
+	float dpadSpeedX, dpadSpeedY;
 };
 
 #endif // USE_SDL

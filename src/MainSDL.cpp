@@ -43,6 +43,15 @@
 #include "Audio.h"
 #include "MainGL.h"
 
+SDL_GameController *findGamepad() {
+    for (int i = 0; i < SDL_NumJoysticks(); i++) {
+        if (SDL_IsGameController(i)) {
+            return SDL_GameControllerOpen(i);
+        }
+    }
+
+    return nullptr;
+}
 
 //====================================================================
 MainSDL::MainSDL(int argc, char **argv)
@@ -55,6 +64,7 @@ MainSDL::MainSDL(int argc, char **argv)
 	xjoy = yjoy = xjNow = yjNow = 0;
 	adjCount = 0;
 	key_speed_x = key_speed_y = 0;
+	dpadSpeedX = dpadSpeedY = 0;
 	window = NULL;
 	context = NULL;
 
@@ -64,6 +74,9 @@ MainSDL::MainSDL(int argc, char **argv)
 
 #ifdef WITH_JOYSTICK
 	initOpts = initOpts|SDL_INIT_JOYSTICK;
+#endif
+#ifdef WITH_GAMEPAD
+	initOpts = initOpts|SDL_INIT_GAMECONTROLLER;
 #endif
 #ifdef NO_PARACHUTE
 	initOpts = initOpts|SDL_INIT_NOPARACHUTE;
@@ -98,7 +111,9 @@ MainSDL::MainSDL(int argc, char **argv)
 #else
 	joystick = 0;
 #endif
-
+#ifdef WITH_GAMEPAD
+	gamepad = findGamepad();
+#endif
 	if( !setVideoMode() )
 	{
 		fprintf(stderr, _("Couldn't set video mode: %s\n"), SDL_GetError());
@@ -160,6 +175,7 @@ bool MainSDL::run()
 	Uint32 now_time		= 0;
 	Uint32 last_time	= 0;
 	key_speed_x  = key_speed_y = 0.0;
+	dpadSpeedX = dpadSpeedY = 0;
 	int done = 0;
 	int frames;
 
@@ -207,6 +223,7 @@ bool MainSDL::run()
 		}
 		this->joystickMove();
 		this->keyMove();
+		this->dpadMove();
 		++frames;
 
 		game->frame++;

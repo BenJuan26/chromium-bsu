@@ -32,7 +32,7 @@ AC_FUNC_MKTIME
 AC_CHECK_FUNCS([atexit floor setenv sqrt strcasecmp strchr strerror strrchr memset setlocale strdup tzset])
 
 AC_DEFINE(WITH_JOYSTICK, 1, [define to enable joystick axis])
-AC_DEFINE(WITH_JOYSTICK_BUTTONS, 1, [define to enable joystick buttons])
+AC_DEFINE(WITH_GAMEPAD, 1, [define to enable joystick buttons])
 
 # Enable some special macintosh path handling
 AC_ARG_WITH(macintosh,

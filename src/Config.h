@@ -105,7 +105,7 @@ public:
 	enum TextType { TextGLC, TextFTGL, NumTextTypes };
 	TextType	textType()	{ return m_textType; };
 
-#ifdef WITH_JOYSTICK_BUTTONS
+#ifdef WITH_GAMEPAD
 	int fireButton() { return m_fireButton; }
 	int useItemButton() { return m_useItemButton; }
 #endif
@@ -151,7 +151,7 @@ private:
 
 	TextType	m_textType;
 
-#ifdef WITH_JOYSTICK_BUTTONS
+#ifdef WITH_GAMEPAD
 	int		m_fireButton;
 	int		m_useItemButton;
 #endif
