@@ -576,15 +576,15 @@ void MainSDL::dpadMove()
 		return;
 	}
 
-	#define LEFT SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT
-	#define RIGHT SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT
-	#define UP SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP
-	#define DOWN SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN
+	#define D_LEFT SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT
+	#define D_RIGHT SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT
+	#define D_UP SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP
+	#define D_DOWN SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN
 
-	if(SDL_GameControllerGetButton(gamepad, LEFT)) key_speed_x -= 2.0 + abs(dpadSpeedX)*0.4;
-	if(SDL_GameControllerGetButton(gamepad, RIGHT)) dpadSpeedX += 2.0 + abs(dpadSpeedX)*0.4;
-	if(SDL_GameControllerGetButton(gamepad, UP)) dpadSpeedY -= 2.0 + abs(dpadSpeedY)*0.4;
-	if(SDL_GameControllerGetButton(gamepad, DOWN)) dpadSpeedY += 2.0 + abs(dpadSpeedY)*0.4;
+	if(SDL_GameControllerGetButton(gamepad, D_LEFT)) dpadSpeedX -= 2.0 + abs(dpadSpeedX)*0.4;
+	if(SDL_GameControllerGetButton(gamepad, D_RIGHT)) dpadSpeedX += 2.0 + abs(dpadSpeedX)*0.4;
+	if(SDL_GameControllerGetButton(gamepad, D_UP)) dpadSpeedY -= 2.0 + abs(dpadSpeedY)*0.4;
+	if(SDL_GameControllerGetButton(gamepad, D_DOWN)) dpadSpeedY += 2.0 + abs(dpadSpeedY)*0.4;
 
 	float s = 0.7;
 	dpadSpeedX *= s;
