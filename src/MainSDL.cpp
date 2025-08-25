@@ -224,6 +224,7 @@ bool MainSDL::run()
 		this->joystickMove();
 		this->keyMove();
 		this->dpadMove();
+		this->controllerMove();
 		++frames;
 
 		game->frame++;
