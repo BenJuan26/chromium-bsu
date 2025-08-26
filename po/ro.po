@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Chromium B.S.U.\n"
 "Report-Msgid-Bugs-To: https://sf.net/p/chromium-bsu/bugs\n"
-"POT-Creation-Date: 2016-11-23 17:33+0100\n"
+"POT-Creation-Date: 2025-08-24 20:31+0000\n"
 "PO-Revision-Date: 2008-05-12 17:04+0200\n"
 "Last-Translator: Eddy Petrișor <eddy.petrisor@gmail.com>\n"
 "Language: ro\n"
@@ -28,10 +28,6 @@ msgstr "O navă în spațiu trebuie să împuște inamicii"
 #: misc/chromium-bsu.desktop.in:5
 msgid "Scrolling space shooter"
 msgstr "O navă în spațiu trebuie să împuște inamicii"
-
-#: misc/chromium-bsu.desktop.in:7
-msgid "chromium-bsu"
-msgstr ""
 
 #: misc/chromium-bsu.desktop.in:12
 msgid "Shooter;Space;"
@@ -164,7 +160,7 @@ msgid ""
 "Version    : %s\n"
 msgstr ""
 
-#: src/AudioOpenAL.cpp:279 src/MainSDL.cpp:116
+#: src/AudioOpenAL.cpp:279 src/MainSDL.cpp:118
 #, c-format
 msgid "------------------------------------------------------------\n"
 msgstr ""
@@ -560,7 +556,7 @@ msgstr ""
 msgid "MainGLUT::run()\n"
 msgstr ""
 
-#: src/MainGLUT.cpp:93 src/MainSDL.cpp:298
+#: src/MainGLUT.cpp:93 src/MainSDL.cpp:300
 #, c-format
 msgid "ERROR!!! OpenGL error: %s\n"
 msgstr ""
@@ -570,37 +566,37 @@ msgstr ""
 msgid "key = %d\n"
 msgstr ""
 
-#: src/MainSDL.cpp:76
+#: src/MainSDL.cpp:78
 #, c-format
 msgid "Couldn't initialize SDL: %s\n"
 msgstr ""
 
-#: src/MainSDL.cpp:79
+#: src/MainSDL.cpp:81
 #, c-format
 msgid "SDL initialized.\n"
 msgstr ""
 
-#: src/MainSDL.cpp:85
+#: src/MainSDL.cpp:87
 #, c-format
 msgid "num joysticks = %d\n"
 msgstr ""
 
-#: src/MainSDL.cpp:87
+#: src/MainSDL.cpp:89
 #, c-format
 msgid "   joystick 0 = %p\n"
 msgstr ""
 
-#: src/MainSDL.cpp:93
+#: src/MainSDL.cpp:95
 #, c-format
 msgid "no joysticks found\n"
 msgstr ""
 
-#: src/MainSDL.cpp:102 src/MainSDL.cpp:384
+#: src/MainSDL.cpp:104 src/MainSDL.cpp:389
 #, c-format
 msgid "Couldn't set video mode: %s\n"
 msgstr ""
 
-#: src/MainSDL.cpp:110
+#: src/MainSDL.cpp:112
 #, c-format
 msgid ""
 "-OpenGL-----------------------------------------------------\n"
@@ -609,22 +605,22 @@ msgid ""
 "Version    : %s\n"
 msgstr ""
 
-#: src/MainSDL.cpp:227
+#: src/MainSDL.cpp:229
 #, c-format
 msgid "init----> %3.2ffps gameSpeed = %g\n"
 msgstr ""
 
-#: src/MainSDL.cpp:234
+#: src/MainSDL.cpp:236
 #, c-format
 msgid "init----> %3.2ffps targetAdj = %g, tmp = %g\n"
 msgstr ""
 
-#: src/MainSDL.cpp:247
+#: src/MainSDL.cpp:249
 #, c-format
 msgid "adjust--> %3.2f targetAdj = %g -- game->speedAdj = %g\n"
 msgstr ""
 
-#: src/MainSDL.cpp:269
+#: src/MainSDL.cpp:271
 #, c-format
 msgid ""
 "%d speed adjustments required.\n"
@@ -637,32 +633,32 @@ msgid ""
 "      can make it difficult to maintain a steady frame rate.\n"
 msgstr ""
 
-#: src/MainSDL.cpp:281
+#: src/MainSDL.cpp:283
 #, c-format
 msgid "exit.\n"
 msgstr ""
 
-#: src/MainSDL.cpp:306
+#: src/MainSDL.cpp:308
 #, c-format
 msgid "ERROR!!! SDL error '%s'\n"
 msgstr ""
 
-#: src/MainSDL.cpp:372
+#: src/MainSDL.cpp:377
 #, c-format
 msgid "Couldn't create window: %s\n"
 msgstr ""
 
-#: src/MainSDL.cpp:378
+#: src/MainSDL.cpp:383
 #, c-format
 msgid "Couldn't create context: %s\n"
 msgstr ""
 
-#: src/MainSDL.cpp:389
+#: src/MainSDL.cpp:394
 #, c-format
 msgid "video mode set "
 msgstr ""
 
-#: src/MainSDL.cpp:398
+#: src/MainSDL.cpp:403
 #, c-format
 msgid "(bpp=%d RGB=%d%d%d depth=%d)\n"
 msgstr ""
@@ -707,29 +703,29 @@ msgstr ""
 msgid "%-5d SDL_JOYBUTTONUP  \n"
 msgstr ""
 
-#: src/MainSDL_Event.cpp:284
+#: src/MainSDL_Event.cpp:301
 #, c-format
 msgid "MainSDL::getEvent HUH?\n"
 msgstr ""
 
-#: src/MainSDL_Event.cpp:294
+#: src/MainSDL_Event.cpp:311
 #, c-format
 msgid ""
 "buffer = \"%s\n"
 "\""
 msgstr ""
 
-#: src/MainSDL_Event.cpp:475
+#: src/MainSDL_Event.cpp:492
 #, c-format
 msgid "key '%s' pressed\n"
 msgstr ""
 
-#: src/MainSDL_Event.cpp:476
+#: src/MainSDL_Event.cpp:493
 #, c-format
 msgid "game->gameFrame = %d\n"
 msgstr ""
 
-#: src/MainSDL_Event.cpp:640
+#: src/MainSDL_Event.cpp:657
 #, c-format
 msgid "MainSDL::grabMouse(%d)\n"
 msgstr ""

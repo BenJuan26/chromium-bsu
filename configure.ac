@@ -31,6 +31,8 @@ AC_FUNC_VPRINTF
 AC_FUNC_MKTIME
 AC_CHECK_FUNCS([atexit floor setenv sqrt strcasecmp strchr strerror strrchr memset setlocale strdup tzset])
 
+AC_DEFINE(WITH_GAMEPAD, 1, [define to enable joystick buttons])
+
 # Enable some special macintosh path handling
 AC_ARG_WITH(macintosh,
 	AS_HELP_STRING([--with-macintosh],[Enable some special macintosh path handling]),
@@ -135,6 +137,11 @@ if test "x$enable_glpng" != xno ; then
 	AC_CHECK_LIB([glpng], [pngBind], [HAVE_GLPNG_LIB=yes], [HAVE_GLPNG_LIB=no], [$GL_LIBS])
 fi
 
+AC_ARG_ENABLE(joystick, AS_HELP_STRING([--enable-joystick], [enable joystick input]))
+AS_IF([test "x$enable_joystick" = "xyes"], [AC_DEFINE(WITH_JOYSTICK, 1, [define to enable joystick input])])
+
+AC_ARG_ENABLE(gamepad, AS_HELP_STRING([--enable-gamepad], [enable gamepad input]))
+AS_IF([test "x$enable_gamepad" = "xyes"], [AC_DEFINE(WITH_GAMEPAD, 1, [define to enable gamepad input])])
 
 if test "x$no_gl" = xyes ; then
 	AC_MSG_ERROR([cannot find OpenGL (drawing system)])

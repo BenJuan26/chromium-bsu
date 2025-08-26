@@ -127,6 +127,11 @@ bool MainSDL::process(SDL_Event *event)
 		case SDL_JOYBUTTONUP:
 			joystickButtonUp(event);
 			break;
+		case SDL_CONTROLLERBUTTONUP:
+			controllerButtonUp(event);
+			break;
+		case SDL_CONTROLLERBUTTONDOWN:
+			controllerButtonDown(event);
 		case SDL_QUIT:
 			return true;
 		default:
@@ -354,6 +359,42 @@ void MainSDL::keyUp(SDL_Event *event)
 	}
 }
 
+void nextLevel() {
+	Global *game = Global::getInstance();
+	game->gotoNextLevel();
+	game->gameMode = Global::Game;
+	game->audio->setMusicMode(Audio::MusicGame);
+}
+
+void newGame() {
+	Global *game = Global::getInstance();
+	game->gameMode = Global::Game;
+	game->newGame();
+	game->toolkit->grabMouse(true);
+	game->audio->setMusicMode(Audio::MusicGame);
+}
+
+void MainSDL::togglePause() {
+	Global	*game = Global::getInstance();
+	if(game->gameMode == Global::Menu)
+	{
+		game->gameMode = Global::Game;
+		game->audio->setMusicMode(Audio::MusicGame);
+		grabMouse(!game->game_pause);
+	}
+	else
+	{
+		if(game->gameMode != Global::Game)
+		{
+			game->newGame();
+		}
+		game->gameMode = Global::Menu;
+		game->menu->startMenu();
+		game->audio->setMusicMode(Audio::MusicMenu);
+		grabMouse(false);
+	}
+}
+
 //----------------------------------------------------------
 void MainSDL::keyDown(SDL_Event *event)
 {
@@ -374,39 +415,18 @@ void MainSDL::keyDown(SDL_Event *event)
 			game->hero->useItem(1);
 			break;
 		case SDLK_ESCAPE:
-			if(game->gameMode == Global::Menu)
-			{
-				game->gameMode = Global::Game;
-				game->audio->setMusicMode(Audio::MusicGame);
-				grabMouse(!game->game_pause);
-			}
-			else
-			{
-				if(game->gameMode != Global::Game)
-				{
-					game->newGame();
-				}
-				game->gameMode = Global::Menu;
-				game->menu->startMenu();
-				game->audio->setMusicMode(Audio::MusicMenu);
-				grabMouse(false);
-			}
+			togglePause();
 			break;
 		default:
 			if(game->gameMode == Global::Game)
 				keyDownGame(event);
 			else if(game->gameMode == Global::LevelOver)
 			{
-				game->gotoNextLevel();
-				game->gameMode = Global::Game;
-				game->audio->setMusicMode(Audio::MusicGame);
+				nextLevel();
 			}
 			else if(game->gameMode == Global::HeroDead)
 			{
-				game->gameMode = Global::Game;
-				game->newGame();
-				game->toolkit->grabMouse(true);
-				game->audio->setMusicMode(Audio::MusicGame);
+				newGame();
 			}
 			else
 			{
@@ -546,6 +566,30 @@ void MainSDL::keyMove()
 		key_speed_y *= s;
 		game->hero->moveEvent(key_speed_x,key_speed_y);
 	}
+}
+
+//----------------------------------------------------------
+void MainSDL::dpadMove()
+{
+	Global	*game = Global::getInstance();
+	if(game->gameMode != Global::Game){
+		return;
+	}
+
+	#define D_LEFT SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT
+	#define D_RIGHT SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT
+	#define D_UP SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP
+	#define D_DOWN SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN
+
+	if(SDL_GameControllerGetButton(gamepad, D_LEFT)) dpadSpeedX -= 2.0 + abs(dpadSpeedX)*0.4;
+	if(SDL_GameControllerGetButton(gamepad, D_RIGHT)) dpadSpeedX += 2.0 + abs(dpadSpeedX)*0.4;
+	if(SDL_GameControllerGetButton(gamepad, D_UP)) dpadSpeedY -= 2.0 + abs(dpadSpeedY)*0.4;
+	if(SDL_GameControllerGetButton(gamepad, D_DOWN)) dpadSpeedY += 2.0 + abs(dpadSpeedY)*0.4;
+
+	float s = 0.7;
+	dpadSpeedX *= s;
+	dpadSpeedY *= s;
+	game->hero->moveEvent(dpadSpeedX,dpadSpeedY);
 }
 
 //----------------------------------------------------------
@@ -707,17 +751,125 @@ void MainSDL::joystickMotion(SDL_Event *)
 }
 
 //----------------------------------------------------------
-void MainSDL::joystickButtonDown(SDL_Event *)
+void MainSDL::joystickButtonDown(SDL_Event *ev)
 {
+#ifdef WITH_JOYSTICK
 	Global	*game = Global::getInstance();
-	game->hero->fireGun(++fire);
+	Config* config = Config::instance();
+	int button = ev->jbutton.button;
+	if( config->debug() ) fprintf(stderr, "joy button %d pressed", button);
+
+	if (button == config->fireButton()) {
+		game->hero->fireGun(++fire);
+	} else if (button == config->useItemButton()) {
+		game->hero->useItem();
+	}
+#endif
 }
 
 //----------------------------------------------------------
-void MainSDL::joystickButtonUp(SDL_Event *)
+void MainSDL::joystickButtonUp(SDL_Event *ev)
 {
+#ifdef WITH_JOYSTICK
 	Global	*game = Global::getInstance();
-	game->hero->fireGun(--fire);
+	Config* config = Config::instance();
+	int button = ev->jbutton.button;
+	if( config->debug() ) fprintf(stderr, "joy button %d released", button);
+
+	if (button == config->fireButton()) {
+		game->hero->fireGun(--fire);
+	}
+#endif
+}
+
+//----------------------------------------------------------
+void MainSDL::buttonDownGame(SDL_Event *event)
+{
+	Global *game = Global::getInstance();
+	Config *config = Config::instance();
+	Uint8 button = event->cbutton.button;
+	switch(button)
+	{
+		case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_Y:
+			game->hero->useItem();
+			break;
+	    case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+			dpadSpeedX -= 5.0;
+			break;
+	    case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+			dpadSpeedX += 5.0;
+			break;
+	    case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP:
+			dpadSpeedY -= 5.0;
+			break;
+	    case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+			dpadSpeedY += 5.0;
+			break;
+	    case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_A:
+		case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
+			game->hero->fireGun(true);
+			break;
+		default:
+			break;
+	}
+}
+
+//----------------------------------------------------------
+void MainSDL::controllerButtonDown(SDL_Event *ev)
+{
+#ifdef WITH_GAMEPAD
+	Global	*game = Global::getInstance();
+	Config* config = Config::instance();
+	Uint8 button = ev->cbutton.button;
+	if( config->debug() ) fprintf(stderr, "gamepad button %d pressed", button);
+
+	switch (button) {
+		case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_START:
+			togglePause();
+			break;
+		default:
+			if(game->gameMode == Global::Game)
+				buttonDownGame(ev);
+			else if(game->gameMode == Global::LevelOver) {
+				nextLevel();
+			} else if(game->gameMode == Global::HeroDead) {
+				newGame();
+			} else {
+				MainToolkit::Key key;
+				switch(button)
+				{
+					case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP: key = MainToolkit::KeyUp; break;
+					case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN: key = MainToolkit::KeyDown; break;
+					case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT: key = MainToolkit::KeyLeft; break;
+					case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT: key = MainToolkit::KeyRight; break;
+					case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_A: key = MainToolkit::KeyEnter; break;
+					default: return;
+				}
+				game->menu->keyHit(key);
+			}
+			break;
+	}
+#endif
+}
+
+//----------------------------------------------------------
+void MainSDL::controllerButtonUp(SDL_Event *ev)
+{
+#ifdef WITH_GAMEPAD
+	Global	*game = Global::getInstance();
+	Config* config = Config::instance();
+	Uint8 button = ev->cbutton.button;
+	if( config->debug() ) fprintf(stderr, "gamepad button %d released", button);
+
+	switch (button) {
+		case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_A:
+		case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
+			game->hero->fireGun(false);
+			break;
+		default:
+			break;
+	}
+#endif
 }
 
 //----------------------------------------------------------
@@ -730,6 +882,23 @@ void MainSDL::joystickMove()
 	{
 		xjoy = SDL_JoystickGetAxis(joystick, 0)/div;
 		yjoy = SDL_JoystickGetAxis(joystick, 1)/div;
+		xjNow = 0.8*xjNow + 0.2*xjoy;
+		yjNow = 0.8*yjNow + 0.2*yjoy;
+		game->hero->moveEvent((int)xjNow, (int)yjNow);
+	}
+#endif
+}
+
+//----------------------------------------------------------
+void MainSDL::controllerMove()
+{
+#ifdef WITH_GAMEPAD
+	Global	*game = Global::getInstance();
+	static int div = 32768/16;
+	if(gamepad)
+	{
+		xjoy = SDL_GameControllerGetAxis(gamepad, SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX)/div;
+		yjoy = SDL_GameControllerGetAxis(gamepad, SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY)/div;
 		xjNow = 0.8*xjNow + 0.2*xjoy;
 		yjNow = 0.8*yjNow + 0.2*yjoy;
 		game->hero->moveEvent((int)xjNow, (int)yjNow);
