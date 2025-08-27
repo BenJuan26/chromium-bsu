@@ -174,8 +174,14 @@ const char* Config::getFileName()
 	if(!homeDir)
 		homeDir = "./";
 
-	sprintf(configFilename, "%s/%s", homeDir, CONFIG_FILE);
-	alterPathForPlatform(configFilename);
+	const char *envConfigFilename = getenv("CHROMIUM_BSU_CONFIG");
+	if (envConfigFilename) {
+		strcpy(configFilename, envConfigFilename);
+	} else {
+		sprintf(configFilename, "%s/%s", homeDir, CONFIG_FILE);
+		alterPathForPlatform(configFilename);
+	}
+
 	return configFilename;
 }
 
