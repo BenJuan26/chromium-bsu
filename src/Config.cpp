@@ -295,15 +295,9 @@ bool Config::readFile()
 bool Config::saveFile()
 {
 	bool retVal;
-	char	configFilename[256];
+	const char *configFilename = getFileName();
 	FILE	*file;
-	const char *homeDir = getenv("HOME");
 
-	if(!homeDir)
-		homeDir = "./";
-
-	sprintf(configFilename, "%s/%s", homeDir, CONFIG_FILE);
-	alterPathForPlatform(configFilename);
 	file = fopen(configFilename, "w");
 	if(file)
 	{
